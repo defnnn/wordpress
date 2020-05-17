@@ -1,5 +1,1 @@
----
-title: Wordpress
----
-
-Supposed to be something here...
+content/_index.md

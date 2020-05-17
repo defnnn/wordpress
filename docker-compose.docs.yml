@@ -12,6 +12,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.docs.rule=Host(`docs.whoa.bot`)"
+      - "traefik.http.services.docs.loadbalancer.server.port=1313"
 
 networks:
   default:
