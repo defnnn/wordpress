@@ -1,31 +1,44 @@
 version: '3.7'
 
 services:
-  wordpress:
-    image: wordpress
-    links:
-      - mysql
-    environment:
-      - WORDPRESS_DB_USER
-      - WORDPRESS_DB_PASSWORD
-      - WORDPRESS_DB_HOST
-  mysql:
-    image: mysql:5.7
-    environment:
-      - MYSQL_DATABASE
-      - MYSQL_USER
-      - MYSQL_PASSWORD
-      - MYSQL_ROOT_PASSWORD
-    volumes:
-      - mysql:/var/lib/mysql
   cloudflared:
     image: letfn/cloudflared
     restart: always
     volumes:
       - ./etc/cloudflared:/etc/cloudflared
     environment:
-      - TUNNEL_URL=https://traefik.whoa.bot
-      - TUNNEL_HOSTNAME=wordpress.defn.sh
-
+      - TUNNEL_HOSTNAME
+      - TUNNEL_URL
+  mariadb:
+    image: 'bitnami/mariadb:10.3'
+    volumes:
+      - 'mariadb_data:/bitnami/mariadb'
+    environment:
+      - MARIADB_ROOT_PASSWORD
+      - MARIADB_DATABASE
+      - MARIADB_USER
+      - MARIADB_PASSWORD
+  wordpress:
+    image: 'bitnami/wordpress:5'
+    volumes:
+      - 'wordpress_data:/bitnami/wordpress'
+    depends_on:
+      - mariadb
+    environment:
+      - MARIADB_HOST
+      - MARIADB_PORT_NUMBER
+      - WORDPRESS_DATABASE_USER
+      - WORDPRESS_DATABASE_NAME
+      - WORDPRESS_DATABASE_PASSWORD
+      - WORDPRESS_USERNAME
+      - WORDPRESS_PASSWORD
+      - WORDPRESS_EMAIL
+      - WORDPRESS_FIRST_NAME
+      - WORDPRESS_LAST_NAME
+      - WORDPRESS_BLOG_NAME
+      - WORDPRESS_SCHEME
 volumes:
-  mysql:
+  mariadb_data:
+    driver: local
+  wordpress_data:
+    driver: local
