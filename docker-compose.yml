@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  wordpress:
+    image: wordpress
+    links:
+      - mysql
+    environment:
+      - WORDPRESS_DB_USER
+      - WORDPRESS_DB_PASSWORD
+      - WORDPRESS_DB_HOST
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_ROOT_PASSWORD
+    volumes:
+      - mysql:/var/lib/mysql
+  cloudflared:
+    image: letfn/cloudflared
+    restart: always
+    volumes:
+      - ./etc/cloudflared:/etc/cloudflared
+    environment:
+      - TUNNEL_URL=https://traefik.whoa.bot
+      - TUNNEL_HOSTNAME=wordpress.defn.sh
+
+volumes:
+  mysql:
