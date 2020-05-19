@@ -1,14 +1,6 @@
 version: '3.7'
 
 services:
-  cloudflared:
-    image: letfn/cloudflared
-    restart: always
-    volumes:
-      - ./etc/cloudflared:/etc/cloudflared
-    environment:
-      - TUNNEL_HOSTNAME
-      - TUNNEL_URL
   mariadb:
     image: 'bitnami/mariadb:10.3'
     volumes:
@@ -37,6 +29,9 @@ services:
       - WORDPRESS_LAST_NAME
       - WORDPRESS_BLOG_NAME
       - WORDPRESS_SCHEME
+    labels:
+      - "hera.hostname=press.defn.sh"
+      - "hera.port=8080"
 volumes:
   mariadb_data:
     driver: local
