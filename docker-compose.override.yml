@@ -4,7 +4,7 @@ services:
   wordpress:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wordpress.rule=Host(`press.whoa.bot`)"
+      - "traefik.http.routers.wordpress.rule=Host(`press.defn.sh`)"
       - "traefik.http.services.wordpress.loadbalancer.server.port=8080"
 
 networks:

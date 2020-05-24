@@ -29,9 +29,6 @@ services:
       - WORDPRESS_LAST_NAME
       - WORDPRESS_BLOG_NAME
       - WORDPRESS_SCHEME
-    labels:
-      - "hera.hostname=press.defn.sh"
-      - "hera.port=8080"
 volumes:
   mariadb_data:
     driver: local
