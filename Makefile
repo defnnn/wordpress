@@ -43,4 +43,7 @@ recreate: # Recreate home container
 	$(MAKE) up
 
 backup: # Backup wordpress content
+	docker-compose stop
 	docker cp $(shell docker-compose ps -q wordpress):/bitnami/wordpress backup/
+	docker cp $(shell docker-compose ps -q mariadb):/bitnami/mariadb backup/
+	kitt up
