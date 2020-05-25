@@ -29,8 +29,40 @@ services:
       - WORDPRESS_LAST_NAME
       - WORDPRESS_BLOG_NAME
       - WORDPRESS_SCHEME
+  mariadb-restore:
+    image: 'bitnami/mariadb:10.3'
+    volumes:
+      - 'mariadb_restore:/bitnami/mariadb'
+    environment:
+      - MARIADB_ROOT_PASSWORD
+      - MARIADB_DATABASE
+      - MARIADB_USER
+      - MARIADB_PASSWORD
+  wordpress-restore:
+    image: 'bitnami/wordpress:5'
+    volumes:
+      - 'wordpress_restore:/bitnami/wordpress'
+    depends_on:
+      - mariadb-restore
+    environment:
+      - MARIADB_HOST=mariadb-restore
+      - MARIADB_PORT_NUMBER
+      - WORDPRESS_DATABASE_USER
+      - WORDPRESS_DATABASE_NAME
+      - WORDPRESS_DATABASE_PASSWORD
+      - WORDPRESS_USERNAME
+      - WORDPRESS_PASSWORD
+      - WORDPRESS_EMAIL
+      - WORDPRESS_FIRST_NAME
+      - WORDPRESS_LAST_NAME
+      - WORDPRESS_BLOG_NAME
+      - WORDPRESS_SCHEME
 volumes:
   mariadb_data:
     driver: local
   wordpress_data:
+    driver: local
+  mariadb_restore:
+    driver: local
+  wordpress_restore:
     driver: local
