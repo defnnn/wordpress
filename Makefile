@@ -47,7 +47,7 @@ backup: # Backup wordpress content
 	docker cp $(shell docker-compose ps -q wordpress):/bitnami/wordpress backup/
 	docker cp $(shell docker-compose ps -q mariadb):/bitnami/mariadb backup/
 	kitt up
-	cd backup && git add . && git push	
+	cd backup && git add . && git commit -m "backup: $(date)" && git push	
 
 restore: # Restore wordpress content
 	docker-compose stop wordpress-restore mariadb-restore
