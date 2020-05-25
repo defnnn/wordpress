@@ -44,10 +44,10 @@ recreate: # Recreate home container
 
 backup: # Backup wordpress content
 	docker-compose stop
-	docker cp $(shell docker-compose ps -q wordpress):/bitnami/wordpress backup/
-	docker cp $(shell docker-compose ps -q mariadb):/bitnami/mariadb backup/
+	sudo docker cp $(shell docker-compose ps -q wordpress):/bitnami/wordpress backup/
+	sudo docker cp $(shell docker-compose ps -q mariadb):/bitnami/mariadb backup/
 	kitt up
-	cd backup && git add . && git commit -m "backup: $(date)" && git push
+	cd backup && sudo git add . && sudo git commit -m "backup: $(date)" && sudo git push
 
 restore: # Restore wordpress content
 	cd restore && $(MAKE) -f ../Makefile restore-inner
@@ -63,11 +63,11 @@ restore-inner:
 	kitt up
 
 restore-inner-inner:
-	docker cp ../backup/mariadb $(shell docker-compose ps -q mariadb-restore):/bitnami/
-	docker cp ../backup/wordpress $(shell docker-compose ps -q wordpress-restore):/bitnami/
+	sudo docker cp ../backup/mariadb $(shell docker-compose ps -q mariadb-restore):/bitnami/
+	sudo docker cp ../backup/wordpress $(shell docker-compose ps -q wordpress-restore):/bitnami/
 
 restore-main:
 	docker-compose stop
-	docker cp backup/mariadb $(shell docker-compose ps -q mariadb):/bitnami/
-	docker cp backup/wordpress $(shell docker-compose ps -q wordpress):/bitnami/
+	sudo docker cp backup/mariadb $(shell docker-compose ps -q mariadb):/bitnami/
+	sudo docker cp backup/wordpress $(shell docker-compose ps -q wordpress):/bitnami/
 	kitt up
