@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: docs
+.PHONY: docs backup
 
 menu:
 	@perl -ne 'printf("%10s: %s\n","$$1","$$2") if m{^([\w+-]+):[^#]+#\s(.+)$$}' Makefile
@@ -41,3 +41,6 @@ restart: # Restart home container
 recreate: # Recreate home container
 	-$(MAKE) down
 	$(MAKE) up
+
+backup: # Backup wordpress content
+	docker cp $(shell docker-compose ps -q wordpress):/bitnami/wordpress backup/
