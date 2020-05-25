@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: docs backup
+.PHONY: docs backup restore
 
 menu:
 	@perl -ne 'printf("%10s: %s\n","$$1","$$2") if m{^([\w+-]+):[^#]+#\s(.+)$$}' Makefile
@@ -47,11 +47,27 @@ backup: # Backup wordpress content
 	docker cp $(shell docker-compose ps -q wordpress):/bitnami/wordpress backup/
 	docker cp $(shell docker-compose ps -q mariadb):/bitnami/mariadb backup/
 	kitt up
-	cd backup && git add . && git commit -m "backup: $(date)" && git push	
+	cd backup && git add . && git commit -m "backup: $(date)" && git push
 
 restore: # Restore wordpress content
-	docker-compose stop wordpress-restore mariadb-restore
-	docker cp backup/mariadb $(shell docker-compose ps -q mariadb-restore):/bitnami/
-	docker cp backup/wordpress $(shell docker-compose ps -q wordpress-restore):/bitnami/
+	cd restore && $(MAKE) -f ../Makefile restore-inner
+
+restore-inner:
+	docker-compose down -v
 	kitt up
-	docker-compose exec -u root wordpress-restore chown -R 1001:0 /bitnami/wordpress
+	sleep 20
+	docker-compose stop
+	sudo perl -pe 's{mariadb:3306}{mariadb-restore:3306}' -i ../backup/wordpress/wp-config.php
+	$(MAKE) -f ../Makefile restore-inner-inner
+	sudo perl -pe 's{mariadb-restore:3306}{mariadb:3306}' -i ../backup/wordpress/wp-config.php
+	kitt up
+
+restore-inner-inner:
+	docker cp ../backup/mariadb $(shell docker-compose ps -q mariadb-restore):/bitnami/
+	docker cp ../backup/wordpress $(shell docker-compose ps -q wordpress-restore):/bitnami/
+
+restore-main:
+	docker-compose stop
+	docker cp backup/mariadb $(shell docker-compose ps -q mariadb):/bitnami/
+	docker cp backup/wordpress $(shell docker-compose ps -q wordpress):/bitnami/
+	kitt up

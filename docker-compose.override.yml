@@ -6,11 +6,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.wordpress.rule=Host(`press.defn.sh`)"
       - "traefik.http.services.wordpress.loadbalancer.server.port=8080"
-  wordpress-restore:
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wordpressed.rule=Host(`pressed.defn.sh`)"
-      - "traefik.http.services.wordpressed.loadbalancer.server.port=8080"
 
 networks:
   default:

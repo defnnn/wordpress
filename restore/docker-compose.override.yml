@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  wordpress-restore:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wordpressed.rule=Host(`pressed.defn.sh`)"
+      - "traefik.http.services.wordpressed.loadbalancer.server.port=8080"
+
+networks:
+  default:
+    external:
+      name: kitt
