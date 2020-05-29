@@ -10,7 +10,7 @@ backup: # Backup wordpress content
 	sudo docker cp $(shell docker-compose ps -q wordpress):/bitnami/wordpress backup/
 	sudo docker cp $(shell docker-compose ps -q mariadb):/bitnami/mariadb backup/
 	kitt up
-	cd backup && sudo git add . && sudo git commit -m "backup: $(date)" && sudo git push
+	cd backup && sudo git add . && sudo git commit -m "backup: $(shell date)" && sudo git push
 
 restore: # Restore wordpress content
 	cd restore && $(MAKE) restore
