@@ -5,6 +5,10 @@ SHELL := /bin/bash
 menu:
 	@perl -ne 'printf("%10s: %s\n","$$1","$$2") if m{^([\w+-]+):[^#]+#\s(.+)$$}' Makefile
 
+mirror: # Mirror wordpress site
+	cd backup && sudo wget --recursive --no-clobber --page-requisites --html-extension --convert-links --restrict-file-names=windows https://press.defn.sh
+	cd backup/press.defn.sh && sudo rm -rf xmlrpc* wp-login.php* wp-json && sudo git add . && (sudo git commit -m "mirror: $(shell date)" && sudo git push) || true
+
 backup: # Backup wordpress content
 	docker-compose stop
 	sudo docker cp $(shell docker-compose ps -q wordpress):/bitnami/wordpress backup/
