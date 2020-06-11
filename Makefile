@@ -24,3 +24,7 @@ restore-main:
 	sudo docker cp backup/mariadb $(shell docker-compose ps -q mariadb):/bitnami/
 	sudo docker cp backup/wordpress $(shell docker-compose ps -q wordpress):/bitnami/
 	kitt up
+
+imagemagick:
+	echo extension=imagick.so | docker-compose run -T wordpress tee -a /opt/bitnami/php/etc/php.ini
+	kitt restart wordpress
