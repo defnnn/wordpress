@@ -29,8 +29,19 @@ services:
       - WORDPRESS_LAST_NAME
       - WORDPRESS_BLOG_NAME
       - WORDPRESS_SCHEME
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wordpress.entrypoints=https"
+      - "traefik.http.routers.wordpress.rule=Host(`press.defn.sh`)"
+      - "traefik.http.services.wordpress.loadbalancer.server.port=8080"
+
 volumes:
   mariadb_data:
     driver: local
   wordpress_data:
     driver: local
+
+networks:
+  default:
+    external:
+      name: kitt
