@@ -32,7 +32,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.wordpress.entrypoints=https"
-      - "traefik.http.routers.wordpress.rule=Host(`press.defn.sh`)"
+      - "traefik.http.routers.wordpress.rule=Host(`press.${KITT_DOMAIN}`)"
       - "traefik.http.services.wordpress.loadbalancer.server.port=8080"
 
 volumes:
