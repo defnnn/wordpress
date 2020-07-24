@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   mariadb:
-    image: 'bitnami/mariadb:10.3'
+    image: 'docker.${KITT_DOMAIN}/bitnami/mariadb:10.3'
     volumes:
       - 'mariadb_data:/bitnami/mariadb'
     environment:
@@ -11,7 +11,7 @@ services:
       - MARIADB_USER
       - MARIADB_PASSWORD
   wordpress:
-    image: 'bitnami/wordpress:5.4.2'
+    image: 'docker.${KITT_DOMAIN}/bitnami/wordpress:5.4.2'
     volumes:
       - 'wordpress_data:/bitnami/wordpress'
     depends_on:
