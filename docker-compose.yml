@@ -5,30 +5,14 @@ services:
     image: 'docker.${KITT_DOMAIN}/bitnami/mariadb:10.3'
     volumes:
       - 'mariadb_data:/bitnami/mariadb'
-    environment:
-      - MARIADB_ROOT_PASSWORD
-      - MARIADB_DATABASE
-      - MARIADB_USER
-      - MARIADB_PASSWORD
+    env_file: .env
   wordpress:
     image: 'docker.${KITT_DOMAIN}/bitnami/wordpress:5.4.2'
     volumes:
       - 'wordpress_data:/bitnami/wordpress'
     depends_on:
       - mariadb
-    environment:
-      - MARIADB_HOST
-      - MARIADB_PORT_NUMBER
-      - WORDPRESS_DATABASE_USER
-      - WORDPRESS_DATABASE_NAME
-      - WORDPRESS_DATABASE_PASSWORD
-      - WORDPRESS_USERNAME
-      - WORDPRESS_PASSWORD
-      - WORDPRESS_EMAIL
-      - WORDPRESS_FIRST_NAME
-      - WORDPRESS_LAST_NAME
-      - WORDPRESS_BLOG_NAME
-      - WORDPRESS_SCHEME
+    env_file: .env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.wordpress.entrypoints=https"
