@@ -7,7 +7,7 @@ services:
       - 'mariadb_data:/bitnami/mariadb'
     env_file: .env
   wordpress:
-    image: 'docker.${KITT_DOMAIN}/bitnami/wordpress:5.4.2'
+    image: 'docker.${KITT_DOMAIN}/bitnami/wordpress:5.5.0'
     volumes:
       - 'wordpress_data:/bitnami/wordpress'
     depends_on:
